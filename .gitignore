@@ -5,6 +5,7 @@
 /.env/
 /venv/
 /env/
+/venv_dj_hw/
 
 # python byte-compiled
 __pycache__
