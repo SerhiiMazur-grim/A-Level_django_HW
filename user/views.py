@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpRequest, Http404
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
 def log_in(request: HttpRequest):
