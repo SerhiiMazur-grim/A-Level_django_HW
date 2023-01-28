@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'task',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +57,7 @@ ROOT_URLCONF = 'dj_hw.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,10 +76,14 @@ WSGI_APPLICATION = 'dj_hw.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DATABASE = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "DATABASE_NAME",
+        "HOST": "POSTGRESQL_HOST",
+        "PORT": "POSTGRESQL_PORT",
+        "USER": "POSTGRESQL_USER",
+        "PASSWORD": "POSTGRESQL_PASSWORD",
     }
 }
 

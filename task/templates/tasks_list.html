@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Task List{% endblock title %}
+{% block style %}
+.task_ul {
+    font-size: 36px;
+    margin-left: 36px;
+}
+{% endblock  %}
+{% block content %}
+<ul class="task_ul">
+    {% for object in object_list %}
+    <li id="Task-{{ object.id }}"><a href="{% url 'task_detail' id=object.id %}">{{ object.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}

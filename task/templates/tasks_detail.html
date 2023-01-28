@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Detail Page{% endblock title %}
+{% block style %}
+div {
+    margin-left: 36px;
+}
+{% endblock  %}
+{% block content %}
+    <div>
+        <h1>{{ object.title}}</h1>
+        <h3>description: {{ object.description }}</h3>
+        <h4>Created: {{ object.created }}</h4>
+        <h4>Updated: {{ object.updated }}</h4>
+        <lable for="completed">Completed</lable>
+        {% if object.completed %}
+        <input id="completed" type="checkbox" checked value="Completed">
+        {% else %}
+        <input id="completed" type="checkbox" value="Completed">
+        {%  endif %}
+    </div>
+{% endblock content %}
