@@ -8,28 +8,26 @@
 
 {% block content %}
 <main class="form-auth form-signup w-100 m-auto">
-  <form>
+  <form method='post'>
+
+    {% csrf_token %}
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-
+    
+    {% for f in form %}
     <div class="form-floating">
-      <input type="text" class="form-control" id="username" placeholder="Username" name="username">
-      <label for="username">Username</label>
+      {{ f }}
+      <label for="{{ f.name }}">{{ f.label }}</label>
     </div>
-
-    <div class="form-floating">
-      <input type="email" class="form-control" id="email" placeholder="Email" name="email">
-      <label for="email">Email</label>
-    </div>
-
-    <div class="form-floating">
-      <input type="password" class="form-control" id="password" placeholder="Password" name="password">
-      <label for="password">Password</label>
-    </div>
-
-    <div class="form-floating">
-      <input type="password" class="form-control" id="confirmPassword" placeholder="Password" name="confirm_password">
-      <label for="confirmPassword">Confirm Password</label>
-    </div>
+    {% endfor %}
 
     <div class="my-3">
       <p>Have already an account?</p>
@@ -41,3 +39,23 @@
 </main>
 
 {% endblock content %}
+
+{% comment %} <div class="form-floating">
+  <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+  <label for="username">Username</label>
+</div>
+
+<div class="form-floating">
+  <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+  <label for="email">Email</label>
+</div>
+
+<div class="form-floating">
+  <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+  <label for="password">Password</label>
+</div>
+
+<div class="form-floating">
+  <input type="password" class="form-control" id="confirmPassword" placeholder="Password" name="confirm_password">
+  <label for="confirmPassword">Confirm Password</label>
+</div> {% endcomment %}

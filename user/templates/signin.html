@@ -7,17 +7,28 @@
 {% endblock navbar %}
 
 {% block content %}
+
 <main class="form-auth form-signin w-100 m-auto">
-  <form>
+  <form method="post">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-    <div class="form-floating">
-      <input type="text" class="form-control" id="username" placeholder="Username">
-      <label for="username">Username</label>
+
+    {% csrf_token %}
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}
     </div>
+    {% endif %}
+
+    {% for f in form %}
     <div class="form-floating">
-      <input type="password" class="form-control" id="password" placeholder="Password">
-      <label for="password">Password</label>
+    {{f}}
+    <label for="{{f.name}}">{{f.label}}</label>
     </div>
+    {% endfor %}
+
     <div class="my-3">
       <p>Have no account?</p>
       <a href="{% url 'signup' %}" class="text-body fw-bold">Sing up now</a>
