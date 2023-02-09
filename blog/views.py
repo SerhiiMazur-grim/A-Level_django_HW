@@ -1,10 +1,8 @@
 from django.http import  HttpRequest, Http404
 from django.shortcuts import render
-from blog.models import Category, Article
+from blog.models import Article
+from dj_hw.view import category, articles
 
-
-category = Category.objects.order_by('id')
-articles = Article.objects.order_by('-id')
 
 
 def home_page(request: HttpRequest):
