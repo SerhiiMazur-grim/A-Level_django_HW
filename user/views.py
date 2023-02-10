@@ -1,26 +1,33 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from .forms import UserForm, UserRegistrationForm
+from django.contrib.auth import logout, login
+from .forms import SignInForm, SignUpForm
 
 
 def signin(request):
-    
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
+        form = SignInForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, "Incorect username or password")
             return redirect('signin')
     else:
-        form = UserForm()
+        form = SignInForm()
         return render(request, "signin.html", {'form': form})
 
-
 def signup(request):
-    form = UserRegistrationForm()
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('signin')
+
+    else:
+        form = SignUpForm()
+
     return render(request, 'signup.html', {'form': form})
+
+def user_logout(request):
+    logout(request)
+    return redirect('signin')
