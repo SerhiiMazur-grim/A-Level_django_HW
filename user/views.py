@@ -16,17 +16,19 @@ def signin(request):
         form = SignInForm()
         return render(request, "signin.html", {'form': form})
 
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('signin')
-
+        else:
+            return redirect('signup')
     else:
         form = SignUpForm()
-
     return render(request, 'signup.html', {'form': form})
+
 
 def user_logout(request):
     logout(request)
