@@ -4,6 +4,9 @@ from django import forms
 
 
 class SignInForm(AuthenticationForm):
+    """
+    Form to authentication user in sistem
+    """
     username = forms.CharField(widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'id': 'username',
@@ -18,7 +21,11 @@ class SignInForm(AuthenticationForm):
 
 
 class SignUpForm(UserCreationForm):
-    username = forms.CharField(label='Username', min_length=4, max_length=32, widget=forms.TextInput(attrs={
+    """
+    Form to create user in sistem
+    """
+    username = forms.CharField(label='Username', min_length=4, max_length=32,
+            widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'id': 'username',
                 'placeholder': "Username"
@@ -38,7 +45,6 @@ class SignUpForm(UserCreationForm):
                 'id': "confirmPassword",
                 'placeholder': "Confirm Password",
     }))
-    
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')

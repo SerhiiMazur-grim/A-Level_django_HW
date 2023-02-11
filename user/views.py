@@ -4,6 +4,9 @@ from .forms import SignInForm, SignUpForm
 
 
 def signin(request):
+    """
+    Sign in function
+    """
     if request.method == 'POST':
         form = SignInForm(data=request.POST)
         if form.is_valid():
@@ -18,6 +21,9 @@ def signin(request):
 
 
 def signup(request):
+    """
+    Sign up function
+    """
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -31,5 +37,8 @@ def signup(request):
 
 
 def user_logout(request):
+    """
+    Logout user
+    """
     logout(request)
     return redirect('signin')
