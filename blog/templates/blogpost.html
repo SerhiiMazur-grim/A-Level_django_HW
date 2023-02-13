@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Article{% endblock title %}
+
+{% block navbar %}
+{% include "navbar.html" %}
+{% endblock navbar %}
+
+{% block content %}
+
+<main class="container">
+  <div class="row">
+    <section class="col-md-9 mb-2" role="main">
+      <h1 class="h1">{{ article.title }}</h1>
+      <div class="row position-relative">
+        <article class="col w-100">
+          <div class="mb-3">
+            <strong class="fw-light">{{ article.category }}</strong>
+            <small>
+              <i class="bi bi-person mx-1"></i><a href="" class="fw-bolder link-secondary">Article Author</a>
+              <i class="bi bi-calendar mx-1"></i><span>{{ article.added }}</span>
+            </small>
+          </div>
+          <p>
+            {{ article.content }}
+          </p>
+        </article>
+      </div>
+    </section>
+
+    {% block sidebar %}
+    {% include 'sidebar.html' %}
+    {% endblock sidebar %}
+
+  </div>
+</main>
+
+
+{% endblock content %}
