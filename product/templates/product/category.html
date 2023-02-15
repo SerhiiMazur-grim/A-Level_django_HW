@@ -1,0 +1,63 @@
+{% extends 'base_templates/base.html' %}
+{% load static %}
+{% block title %}All Products{% endblock title %}
+
+
+{% block content %}
+
+<div class="section">
+	<div class="container">
+		<h1 class="product-name">All categories</h1>
+		<div class="row">
+			<div id="store" class="col-md-9">
+				<div class="row">
+					{% for product in object_list %}
+					<!-- product -->
+					<div class="col-md-4 col-xs-6 col-xs-10">
+						<div class="product">
+							{% comment %} <div class="product-img">
+								<img src="./img/product03.png" alt="">
+							</div> {% endcomment %}
+							<div class="product-body">
+								<p class="product-category">{{ product.category }}</p>
+								<h3 class="product-name"><a href="{% url 'product' product.slug %}">{{ product.title }}</a></h3>
+								<div class="product-rating"></div>
+								<h5>{{ product.description|truncatewords:15 }}</h5>
+								<h4 class="product-price">${{ product.price }}</h4>
+								<div class="product-rating"></div>
+							</div>
+							<div class="add-to-cart">
+								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+							</div>
+						</div>
+					</div>
+					<!-- /product -->
+					{% endfor %}
+
+					<div class="clearfix visible-lg visible-md"></div>
+
+
+				<!-- store bottom filter -->
+				<div class="store-filter clearfix">
+					<span class="store-qty">Showing 20-100 products</span>
+					<ul class="store-pagination">
+						<li class="active">1</li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+					</ul>
+				</div>
+				<!-- /store bottom filter -->
+			</div>
+			<!-- /STORE -->
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /SECTION -->
+{% endblock content %}
+
+
+
