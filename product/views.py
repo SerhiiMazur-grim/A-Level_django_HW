@@ -15,15 +15,11 @@ class ProductView(DetailView):
     template_name = 'product/product.html'
 
 
-# class ProductsByCategory(ListView):
-#     model = ProductInstance
-#     extra_context = {'categories': Category.objects.order_by('id'),}
-#     template_name = 'product/category.html'
-    
-    # def get_queryset(self):
-    #     return ProductInstance.objects.all()
-
 class ProductsByCategory(ListView):
     model = ProductInstance
     extra_context = {'categories': Category.objects.order_by('id'),}
     template_name = 'product/category.html'
+    
+    def get_queryset(self):
+        qs = ProductInstance.objects.filter(category__category=self.kwargs['category'])
+        return qs
