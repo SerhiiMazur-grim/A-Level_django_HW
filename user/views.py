@@ -10,7 +10,6 @@ from django.urls import reverse_lazy
 class MyLoginView(LoginView):
     form_class = Log_in
     next_page = 'home'
-    extra_context = {'categories': Category.objects.order_by('id'),}
     template_name = 'user/login.html'
 
 
@@ -19,7 +18,6 @@ class MyLoginView(LoginView):
 class MyRegister(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
-    extra_context = {'categories': Category.objects.order_by('id'),}
     template_name = 'user/register.html'
 
 def user_logout(request):
