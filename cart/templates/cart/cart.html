@@ -12,12 +12,11 @@
 	<div class="container">
 		<!-- row -->
 		<div class="row">
-
-			{% for ord in order %}
+			{% if cart.get_items.exists %}
 			<!-- Order Details -->
 			<div class="col-md-5 order-details">
 				<div class="section-title text-center">
-					<h3 class="title">Your Order</h3>
+					<h3 class="title">Your products for order</h3>
 				</div>
 				<div class="order-summary">
 					<div class="order-col">
@@ -25,7 +24,7 @@
 						<div><strong>TOTAL</strong></div>
 					</div>
 					<div class="order-products">
-						{% for item in ord.get_items %}
+						{% for item in cart.get_items %}
 						<div class="order-col">
 							<div>{{item.quantity}}x {{item.product.title}}</div>
 							<div>${{item.get_total}}</div>
@@ -38,15 +37,14 @@
 					</div>
 					<div class="order-col">
 						<div><strong>TOTAL</strong></div>
-						<div><strong class="order-total">${{ord.get_total_order}}</strong></div>
+						<div><strong class="order-total">${{cart.get_total_cart}}</strong></div>
 					</div>
 				</div>
 
-				<a href="{% url 'delete_order' order_id=ord.id %}"  class="primary-btn order-submit">delete order</a>
-				<a href="#" class="primary-btn order-submit">return order</a>
+				<a href="{% url 'order' %}" class="primary-btn order-submit">Place order</a>
 			</div>
 			<!-- /Order Details -->
-			{% endfor %}
+			{% endif %}
 		</div>
 		<!-- /row -->
 	</div>

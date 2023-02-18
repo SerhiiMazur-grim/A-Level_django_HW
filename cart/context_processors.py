@@ -8,4 +8,3 @@ def cart(request):
         return {'cart': cart}
     except:
         return {'cart': None}
-
