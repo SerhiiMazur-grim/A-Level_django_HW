@@ -1,0 +1,13 @@
+{% extends 'base_templates/base.html' %}
+
+{% load static %}
+
+{% block title %}Checkout{% endblock title %}
+
+{% block content %}
+
+<p>Your request to return order {{ order.id }} has been submitted for review.</p>
+<a href="{% url 'orders_list' %}">Return to orders list
+
+
+{% endblock content %}

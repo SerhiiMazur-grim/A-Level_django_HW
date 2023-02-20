@@ -68,7 +68,7 @@
           <ul class="header-links pull-right">
             {% if user.is_authenticated %}
             <li>
-              <a href="{% url 'checkout' %}"><i class="fa fa-user-o"></i> {{user.first_name}} your balance: ${{user.money}}</a>
+              <a href="#"><i class="fa fa-user-o"></i> {{user.first_name}} your balance: ${{user.money}}</a>
             </li>
             <li>
               <a href="{% url 'logout' %}"><i class="fa fa-user-o"></i>Log out</a>

@@ -71,7 +71,7 @@
 								<h4 class="product-price">${{ product.price }}</h4>
 								<div class="product-rating"></div>
 							</div>
-							<a href="{% url 'add' cart_id=cart.id prod_id=product.id %}">ADD</a>
+							<a href="{% url 'add_to_cart' product_id=product.id %}">ADD</a>
 							{% include "base_templates/add_button.thml" %}
 						</div>
 					</div>

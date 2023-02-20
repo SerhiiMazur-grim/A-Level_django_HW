@@ -6,13 +6,40 @@
 
 {% block content %}
 
+{% comment %} <h1>Кошик</h1>
+  {% if cart %}
+    <table>
+      <thead>
+        <tr>
+          <th>Назва товару</th>
+          <th>Ціна</th>
+          <th>Кількість</th>
+          <th>Сума</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart.items.all %}
+          <tr>
+            <td>{{ item.product.title }}</td>
+            <td>{{ item.product.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.get_cost }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p>Загальна сума: {{ cart.cart_total_cost }}</p>
+  {% else %}
+    <p>Ваш кошик порожній.</p>
+  {% endif %} {% endcomment %}
+
 <!-- SECTION -->
 <div class="section">
 	<!-- container -->
 	<div class="container">
 		<!-- row -->
 		<div class="row">
-			{% if cart.get_items.exists %}
+			{% if cart.items.all.exists %}
 			<!-- Order Details -->
 			<div class="col-md-5 order-details">
 				<div class="section-title text-center">
@@ -24,10 +51,10 @@
 						<div><strong>TOTAL</strong></div>
 					</div>
 					<div class="order-products">
-						{% for item in cart.get_items %}
+						{% for item in cart.items.all %}
 						<div class="order-col">
 							<div>{{item.quantity}}x {{item.product.title}}</div>
-							<div>${{item.get_total}}</div>
+							<div>${{item.get_cost}}</div>
 						</div>
 						{% endfor %}
 					</div>
@@ -37,13 +64,15 @@
 					</div>
 					<div class="order-col">
 						<div><strong>TOTAL</strong></div>
-						<div><strong class="order-total">${{cart.get_total_cart}}</strong></div>
+						<div><strong class="order-total">${{cart.total}}</strong></div>
 					</div>
 				</div>
 
-				<a href="{% url 'order' %}" class="primary-btn order-submit">Place order</a>
+				<a href="create_order" class="primary-btn order-submit">Place order</a>
 			</div>
 			<!-- /Order Details -->
+			{% else %}
+			<h3 class="title">Your cart empty</h3>
 			{% endif %}
 		</div>
 		<!-- /row -->

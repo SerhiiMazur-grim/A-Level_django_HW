@@ -12,7 +12,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=32)
     last_name = models.CharField(max_length=32)
     email = models.EmailField(_('email'), unique=True)
-    money = models.IntegerField(default=10000)
+    money = models.DecimalField(default=10000.00, max_digits=10, decimal_places=2)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)

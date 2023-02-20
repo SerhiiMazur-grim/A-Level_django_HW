@@ -6,7 +6,23 @@
 
 {% block content %}
 
-<!-- SECTION -->
+{% for order in orders %}
+  <div class="order">
+    <h3>Order {{ order.id }}</h3>
+    <p>Total cost: {{ order.total_cost }}</p>
+    {% if order.can_return %}
+      <form method="post" action="{% url 'return_order' order_id=order.id %}">
+        {% csrf_token %}
+        <button type="submit">Request Return</button>
+      </form>
+    {% endif %}
+  </div>
+{% empty %}
+  <p>No orders found.</p>
+{% endfor %}
+
+
+{% comment %} <!-- SECTION -->
 <div class="section">
 	<!-- container -->
 	<div class="container">
@@ -52,7 +68,7 @@
 	</div>
 	<!-- /container -->
 </div>
-<!-- /SECTION -->
+<!-- /SECTION --> {% endcomment %}
 
 
 {% endblock content %}

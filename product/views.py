@@ -1,8 +1,6 @@
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from .models import ProductInstance
-from cart.models import CartItem, Cart
-from django.shortcuts import render, redirect
 
 
 class ProductsListView(ListView):

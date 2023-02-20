@@ -1,12 +1,12 @@
 from django.urls import path
 
-from .views import cart, add, checkout, delete_order, order
+from .views import CartView, add_to_cart, orders_list, return_order, create_order
 
 
 urlpatterns = [
-    path('cart/', cart, name='cart'),
-    path('checkout/', checkout, name='checkout'),
-    path('cart/add/<int:cart_id>/<uuid:prod_id>', add, name='add'),
-    path('order/delete/<int:order_id>/', delete_order, name='delete_order'),
-    path('order/create/', order, name='order'),
+    path('cart/', CartView.as_view(), name='cart'),
+    path('add_to_cart/<uuid:product_id>/', add_to_cart, name='add_to_cart'),
+    path('orders_list/', orders_list, name='orders_list'),
+    path('cart/create_order/', create_order, name='create_order'),
+    path('order/<int:order_id>/return/', return_order, name='return_order'),
 ]

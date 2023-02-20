@@ -1,99 +1,106 @@
 from django.db import models
-from django.shortcuts import redirect
+from django.urls import reverse
+from django.utils import timezone
+from datetime import timedelta
 
 from user.models import CustomUser
 from product.models import ProductInstance
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
-    complete = models.BooleanField(default=False, blank=True, null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    added_date = models.DateTimeField(auto_now_add=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    total = models.DecimalField(max_digits=10, decimal_places=2, null=True )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
-        return str(self.user)
-
+        return f'{self.user} - {self.id}'
+    
     def __len__(self):
-        len = self.get_items().count()
-        return len
+        return self.items.count()
 
-    def get_items(self):
-        qs = CartItem.objects.filter(cart=self.id)
-        return qs
-    
-    def get_items_ids(self):
-        qs = [i.product.id for i in self.get_items()]
-        return qs
+    def get_absolute_url(self):
+        return reverse('cart_detail', args=[self.id])
 
-    def get_total_cart(self):
-        total = sum([item.get_total() for item in self.get_items()])
-        return total
-    
-    def clear_cart(self):
-        for item in self.get_items():
-            item.delete()
+    def cart_total_cost(self):
+        self.total = sum(item.get_cost() for item in self.items.all())
         self.save()
-        
-    
+        return self.total
 
 
 class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(ProductInstance, on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True, blank=True)
-    quantity = models.IntegerField(default=0, blank=True, null=True)
-    added_date = models.DateTimeField(auto_now_add=True)
+    quantity = models.PositiveIntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
-        return  self.product.title
+        return f'{self.product} ({self.quantity})'
 
-    def get_total(self):
-        total = self.product.price * self.quantity
-        return total
+    def get_absolute_url(self):
+        return self.product.get_absolute_url()
+
+    def get_cost(self):
+        cost = self.product.price * self.quantity
+        return cost
+
+    def increment_quantity(self):
+        self.quantity += 1
+        self.save()
+
+    def decrement_quantity(self):
+        self.quantity -= 1
+        if self.quantity <= 0:
+            self.delete()
+        else:
+            self.save()
 
 
 class Order(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return str(self.user) + ' - ' + str(self.id)
-    
-    def save_cart_items(self):
-        cart = Cart.objects.get(user=self.user)
-        for item in cart.get_items():
-            obj = OrderItems(
-                product = item.product,
-                order = self,
-                quantity = item.quantity
-                )
-            obj.save()
-        cart.clear_cart()
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    total_cost = models.DecimalField(max_digits=10, decimal_places=2)
+    is_returned = models.BooleanField(default=False)
+    request_to_return = models.BooleanField(default=False)
 
-    def get_items(self):
-        qs = OrderItems.objects.filter(order=self.id)
-        return qs
+    def can_return(self):
+        if timezone.now() - self.created_at > timedelta(minutes=3) or self.is_returned==True:
+            return False
+        return True
 
-    def get_total_order(self):
-        total = sum([item.get_total() for item in self.get_items()])
-        return total
+    def request_return(self):
+        if not self.can_return():
+            return False
+        
+        self.request_to_return = True
+        self.save()
+        
+        return True
+
+    def return_order(self):
+        
+        for item in self.items.all():
+            product_instance = item.product
+            product_instance.quantity += item.quantity
+            product_instance.save()
+
+        user = self.user
+        user.money += self.total_cost
+        user.save()
+        
+        self.is_returned = True
+        self.save()
 
 
 
-class OrderItems(models.Model):
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(ProductInstance, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
-    quantity = models.IntegerField(default=0, blank=True, null=True)
-    added_date = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return  self.product.title
-    
-    def get_total(self):
-        total = self.product.price * self.quantity
-        return total
+    quantity = models.PositiveIntegerField()
+    item_total_cost = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 

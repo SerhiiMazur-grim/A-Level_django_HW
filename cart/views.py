@@ -1,51 +1,78 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils import timezone
 
+from .models import Cart, CartItem, Order, OrderItem
 from product.models import ProductInstance
-from .models import Cart, CartItem, Order, OrderItems
 
+
+class CartView(LoginRequiredMixin, View):
+    template_name = 'cart/cart.html'
+
+    def get(self, request, *args, **kwargs):
+        cart = Cart.objects.get(user=request.user)
+        ctx = {
+            'cart': cart
+        }
+        return render(request, self.template_name, ctx)
 
 @login_required
-def cart(request):
-    return render(request, 'cart/cart.html')
-
-@login_required
-def checkout(request):
+def add_to_cart(request, product_id):
     user = request.user
-    order = Order.objects.filter(user=user)
-    return render(request, 'cart/checkout.html', {'order': order})
+    cart = Cart.objects.get(user=user)
+    product_instance = ProductInstance.objects.get(id=product_id)
+    if product_instance.decrease_quantity():
+        try:
+            cart_item = cart.items.get(product_id=product_id)
+            cart_item.increment_quantity()
+            messages.success(request, "Product quantity updated in cart.")
+        except CartItem.DoesNotExist:
+            CartItem.objects.create(cart=cart, product=product_instance)
+            messages.success(request, "Product added to cart.")
 
+        cart.cart_total_cost()
 
-
-@login_required
-def add(request, cart_id, prod_id):
-    product = ProductInstance.objects.get(id=prod_id)
-    cart = Cart.objects.get(id=cart_id)
-    if product.count > 0:
-        if product.id in cart.get_items_ids():
-            obj = CartItem.objects.get(product = product.id)
-            obj.quantity += 1
-            obj.save()
-        else:
-            obj = CartItem(
-                product = product,
-                cart = cart,
-                quantity = 1
-            )
-            obj.save()
     else:
-        pass
-    return redirect(request.META['HTTP_REFERER'])
+        messages.warning(request, "This product is not in stock.")
+    return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
-def order(request):
-        user = request.user
-        order= Order.objects.create(user=user)
-        order.save_cart_items()
-        return redirect('checkout')
+def orders_list(request):
+    user = request.user
+    orders = Order.objects.filter(user=user)
+    return render(request, 'cart/checkout.html', {'orders': orders})
 
 @login_required
-def delete_order(request, order_id):
+def create_order(request):
+    user = request.user
+    cart = Cart.objects.get(user=user)
+    
+    # Створити нове замовлення
+    order = Order.objects.create(user=user, total_cost=cart.cart_total_cost())
+    
+    # Додати елементи замовлення
+    for cart_item in cart.items.all():
+        OrderItem.objects.create(
+            order=order, 
+            product=cart_item.product, 
+            quantity=cart_item.quantity, 
+            item_total_cost=cart_item.get_cost())
+    
+    # Очистити кошик
+    user.money -= cart.cart_total_cost()
+    user.save()
+    cart.items.all().delete()
+    
+    # Перенаправити користувача на сторінку з підтвердженням замовлення
+    return redirect('orders_list')
+
+@login_required
+def return_order(request, order_id):
     order = Order.objects.get(id=order_id)
-    order.delete()
-    return redirect(request.META['HTTP_REFERER'])
+    if request.method == 'POST':
+        order.request_return()
+        return redirect('orders_list')
+    return redirect('orders_list')
