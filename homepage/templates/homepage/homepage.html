@@ -103,7 +103,9 @@
                     <div class="product-btns">
                     </div>
                   </div>
-
+                  {% if not product.quantity%}
+                  <p>Out of Stock</p>
+                  {% endif %}
                   {% include "base_templates/add_button.thml" %}
 
                 </div>

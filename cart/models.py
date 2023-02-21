@@ -65,7 +65,13 @@ class Order(models.Model):
     total_cost = models.DecimalField(max_digits=10, decimal_places=2)
     is_returned = models.BooleanField(default=False)
     request_to_return = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f'{self.user} - {self.id}'
 
+    def item_list(self):
+        return self.items.all()
+    
     def can_return(self):
         if timezone.now() - self.created_at > timedelta(minutes=3) or self.is_returned==True:
             return False
@@ -101,6 +107,13 @@ class OrderItem(models.Model):
     product = models.ForeignKey(ProductInstance, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     item_total_cost = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    def __str__(self):
+        return f'{self.product} ({self.quantity})'
+    
+    def get_cost(self):
+        cost = self.product.price * self.quantity
+        return cost
 
 
 

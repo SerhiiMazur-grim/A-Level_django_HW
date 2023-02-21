@@ -13,8 +13,7 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700"
       rel="stylesheet"
     />
-    {% comment %} <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> {% endcomment %}
+
 
     <link
       type="text/css"
@@ -68,7 +67,7 @@
           <ul class="header-links pull-right">
             {% if user.is_authenticated %}
             <li>
-              <a href="#"><i class="fa fa-user-o"></i> {{user.first_name}} your balance: ${{user.money}}</a>
+              <a href="{% url 'orders_list' %}"><i class="fa fa-user-o"></i> {{user.first_name}} your balance: ${{user.money}}</a>
             </li>
             <li>
               <a href="{% url 'logout' %}"><i class="fa fa-user-o"></i>Log out</a>

@@ -5,21 +5,75 @@
 {% block title %}Checkout{% endblock title %}
 
 {% block content %}
-
-{% for order in orders %}
+<h1>My Orders</h1>
+{% comment %} {% for order in orders %}
   <div class="order">
     <h3>Order {{ order.id }}</h3>
+
     <p>Total cost: {{ order.total_cost }}</p>
     {% if order.can_return %}
       <form method="post" action="{% url 'return_order' order_id=order.id %}">
         {% csrf_token %}
-        <button type="submit">Request Return</button>
+		<a href="create_order" class="primary-btn order-submit">Request Return</a>
       </form>
     {% endif %}
   </div>
 {% empty %}
   <p>No orders found.</p>
 {% endfor %}
+
+{% for order in orders %}
+{% for item in order.item_list %}{% endfor %}
+{% for i in order.item_list %}
+{{i.product}}
+{% endfor %}
+{% empty %}
+<p>No orders found.</p>
+{% endfor %} {% endcomment %}
+
+<div class="row">
+{% for order in orders %}
+<div class="col-md-5 order-details">
+	<div class="section-title text-center">
+		<h3 class="title">Order {{ order.id }}</h3>
+	</div>
+	<div class="order-summary">
+		<div class="order-col">
+			<div><strong>PRODUCT</strong></div>
+			<div><strong>TOTAL</strong></div>
+		</div>
+		{% for item in order.item_list %}
+		<div class="order-products">
+			
+			<div class="order-col">
+				<div>{{item.quantity}}x {{item.product.title}}</div>
+				<div>${{item.get_cost}}</div>
+			</div>
+			
+		</div>
+		{% endfor %}
+		<div class="order-col">
+			<div>Shiping</div>
+			<div><strong>FREE</strong></div>
+		</div>
+		<div class="order-col">
+			<div><strong>TOTAL</strong></div>
+			<div><strong class="order-total">${{ order.total_cost }}</strong></div>
+		</div>
+	</div>
+
+	{% if order.can_return %}
+      <form method="post" action="{% url 'return_order' order_id=order.id %}">
+        {% csrf_token %}
+		<a href="create_order" class="primary-btn order-submit">Request Return</a>
+      </form>
+    {% endif %}
+</div>
+{% empty %}
+  <p>No orders found.</p>
+{% endfor %}
+</div>
+
 
 
 {% comment %} <!-- SECTION -->

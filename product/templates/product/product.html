@@ -62,25 +62,20 @@
 					<h2 class="product-name">{{object.title}}</h2>
 					<div>
 						<h3 class="product-price">${{object.price}} </h3>
-						{% if object.count %}
+						{% if object.quantity %}
 						<span class="product-available">In Stock</span>
 						{% else %}
 						<span class="product-available">Out of Stock</span>
 						{% endif %}
 					</div>
 					<p>{{object.description|truncatewords:50}}</p>
-					{% if user.is_authenticated %}
+					{% if user.is_authenticated and object.quantity %}
+					<form action="{% url 'add_to_cart' product_id=object.id %}" method="post">
+						{% csrf_token %}
 					<div class="add-to-cart">
-						<div class="qty-label">
-							Qty
-							<div class="input-number">
-								<input type="number" value=1>
-								<span class="qty-up">+</span>
-								<span class="qty-down">-</span>
-							</div>
-						</div>
 						<button class="add-to-cart-btn" type="submit"><i class="fa fa-shopping-cart"></i> add to cart</button>
 					</div>
+					</form>
 					{% endif %}
 					<ul class="product-links">
 						<li>Category:</li>

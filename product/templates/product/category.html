@@ -7,7 +7,11 @@
 
 <div class="section">
 	<div class="container">
-		<h1 class="product-name">All categories</h1>
+		{% if object_list.exists %}
+		<h1 class="product-name">{{object_list.first.category}}</h1>
+		{% else %}
+		<h1 class="product-name">Sorry no products yet :(</h1>
+		{% endif %}
 		<div class="row">
 			<div id="store" class="col-md-9">
 				<div class="row">
@@ -26,6 +30,9 @@
 								<h4 class="product-price">${{ product.price }}</h4>
 								<div class="product-rating"></div>
 							</div>
+							{% if product.quantity%}
+							<p>Out of Stock</p>
+							{% endif %}
 							{% include "base_templates/add_button.thml" %}
 						</div>
 					</div>
@@ -35,18 +42,7 @@
 					<div class="clearfix visible-lg visible-md"></div>
 
 
-				<!-- store bottom filter -->
-				<div class="store-filter clearfix">
-					<span class="store-qty">Showing 20-100 products</span>
-					<ul class="store-pagination">
-						<li class="active">1</li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-					</ul>
-				</div>
-				<!-- /store bottom filter -->
+
 			</div>
 			<!-- /STORE -->
 		</div>

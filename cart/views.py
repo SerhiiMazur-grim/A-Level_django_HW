@@ -42,7 +42,7 @@ def add_to_cart(request, product_id):
 @login_required
 def orders_list(request):
     user = request.user
-    orders = Order.objects.filter(user=user)
+    orders = Order.objects.filter(user=user).order_by("-id")
     return render(request, 'cart/checkout.html', {'orders': orders})
 
 @login_required
@@ -50,10 +50,8 @@ def create_order(request):
     user = request.user
     cart = Cart.objects.get(user=user)
     
-    # Створити нове замовлення
     order = Order.objects.create(user=user, total_cost=cart.cart_total_cost())
     
-    # Додати елементи замовлення
     for cart_item in cart.items.all():
         OrderItem.objects.create(
             order=order, 
@@ -61,12 +59,10 @@ def create_order(request):
             quantity=cart_item.quantity, 
             item_total_cost=cart_item.get_cost())
     
-    # Очистити кошик
     user.money -= cart.cart_total_cost()
     user.save()
     cart.items.all().delete()
     
-    # Перенаправити користувача на сторінку з підтвердженням замовлення
     return redirect('orders_list')
 
 @login_required

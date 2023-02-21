@@ -5,9 +5,16 @@ from .models import CustomUser
 
 
 class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm):
+    email = forms.EmailField(required=True, label="Email", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
+    first_name = forms.CharField(required=True, label="First Name", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
+    last_name = forms.CharField(required=True, label="Last Name", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
+    password1 = forms.CharField(required=True, label="Password", widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password', 'placeholder': 'Password'}))
+    password2 = forms.CharField(required=True, label="Confirm Password", widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password', 'placeholder': 'Confirm Password'}))
+
+    class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'email',)
+        fields = ('email', 'first_name', 'last_name', 'password1', 'password2',)
+
 
 
 class CustomUserChangeForm(UserChangeForm):
