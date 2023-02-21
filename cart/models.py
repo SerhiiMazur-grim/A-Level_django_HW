@@ -63,7 +63,7 @@ class Order(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     total_cost = models.DecimalField(max_digits=10, decimal_places=2)
-    is_returned = models.BooleanField(default=False)
+    is_returned = models.BooleanField(null=True)
     request_to_return = models.BooleanField(default=False)
     
     def __str__(self):

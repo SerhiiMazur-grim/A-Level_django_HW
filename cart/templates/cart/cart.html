@@ -6,32 +6,6 @@
 
 {% block content %}
 
-{% comment %} <h1>Кошик</h1>
-  {% if cart %}
-    <table>
-      <thead>
-        <tr>
-          <th>Назва товару</th>
-          <th>Ціна</th>
-          <th>Кількість</th>
-          <th>Сума</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in cart.items.all %}
-          <tr>
-            <td>{{ item.product.title }}</td>
-            <td>{{ item.product.price }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.get_cost }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <p>Загальна сума: {{ cart.cart_total_cost }}</p>
-  {% else %}
-    <p>Ваш кошик порожній.</p>
-  {% endif %} {% endcomment %}
 
 <!-- SECTION -->
 <div class="section">
@@ -68,7 +42,7 @@
 					</div>
 				</div>
 
-				<a href="create_order" class="primary-btn order-submit">Place order</a>
+				<a href="{% url 'create_order' %}" class="primary-btn order-submit">Place order</a>
 			</div>
 			<!-- /Order Details -->
 			{% else %}

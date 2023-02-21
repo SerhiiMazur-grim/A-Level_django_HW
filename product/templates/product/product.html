@@ -63,7 +63,7 @@
 					<div>
 						<h3 class="product-price">${{object.price}} </h3>
 						{% if object.quantity %}
-						<span class="product-available">In Stock</span>
+						<span class="product-available">In Stock - {{object.quantity}}</span>
 						{% else %}
 						<span class="product-available">Out of Stock</span>
 						{% endif %}
