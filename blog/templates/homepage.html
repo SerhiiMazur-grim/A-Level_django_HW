@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}HomePage{% endblock title %}
+
+{% block navbar %}
+{% include "navbar.html" %}
+{% endblock navbar %}
+
+{% block carousel %}
+{% include "carousel.html" %}
+{% endblock carousel %}
+
+{% block content %}
+<main class="container">
+  <div class="row">
+    <section class="col-md-9 mb-2" role="main">
+      <h1 class="h1">Blog posts</h1>
+      <div class="row row-cols-1 row-cols-md-3 g-4 position-relative">
+        
+        {% for article in article_list %}
+        <article class="col">
+          <div class="card shadow">
+            <img
+              src="https://loremflickr.com/320/240?random={{ article.id }}"
+              alt="Blog post image"
+              class="card-img-top"
+            />
+            <div class="card-body">
+              <strong class="fw-light">{{ article.category }}</strong>
+              <h2 class="card-title">{{ article.title }}</h2>
+              <small>
+                <i class="bi bi-person mx-1"></i
+                ><a href="" class="fw-bolder link-secondary">Article Author</a>
+                <i class="bi bi-calendar mx-1"></i><span>{{ article.added }}</span>
+              </small>
+              <p class="card-text">{{ article.content|truncatewords:30 }}</p>
+              <a href="{% url 'article_page' id=article.id %}" class="card-link text-body fw-bold"
+                >Continue reading...</a
+              >
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    {% block sidebar %}
+    {% include 'sidebar.html' %}
+    {% endblock sidebar %}
+
+  </div>
+</main>
+
+
+{% endblock content %}

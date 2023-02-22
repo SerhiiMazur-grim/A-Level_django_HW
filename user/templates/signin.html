@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}SignIn{% endblock title %}
+
+{% block navbar %}
+{% include "navbar.html" %}
+{% endblock navbar %}
+
+{% block content %}
+
+<main class="form-auth form-signin w-100 m-auto">
+  <form method="post">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+    {% csrf_token %}
+
+    {% for f in form %}
+    <div class="form-floating">
+    {{f}}
+    <label for="{{f.name}}">{{f.label}}</label>
+    </div>
+    {% endfor %}
+
+    <div class="my-3">
+      <p>Have no account?</p>
+      <a href="{% url 'signup' %}" class="text-body fw-bold">Sing up now</a>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign In</button>
+  </form>
+</main>
+
+{% endblock content %}
