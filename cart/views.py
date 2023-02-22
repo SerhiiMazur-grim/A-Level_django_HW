@@ -18,25 +18,32 @@ class CartView(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, ctx)
 
+
 @login_required
 def add_to_cart(request, product_id):
     user = request.user
     cart = Cart.objects.get(user=user)
     product_instance = ProductInstance.objects.get(id=product_id)
-    if product_instance.decrease_quantity():
-        try:
-            cart_item = cart.items.get(product_id=product_id)
-            cart_item.increment_quantity()
-            messages.success(request, "Product quantity updated in cart.")
-        except CartItem.DoesNotExist:
-            CartItem.objects.create(cart=cart, product=product_instance)
-            messages.success(request, "Product added to cart.")
-
-        cart.cart_total_cost()
+    quantity = int(request.POST.get('quantity', 1))
+    if user.money - cart.cart_total_cost() - product_instance.price * quantity >=0:
+        if product_instance.decrease_quantity(quantity):
+            try:
+                cart_item = cart.items.get(product_id=product_id)
+                cart_item.quantity += quantity
+                cart_item.save()
+                messages.success(request, "Product quantity updated in cart.")
+            except CartItem.DoesNotExist:
+                CartItem.objects.create(cart=cart, product=product_instance, quantity=quantity)
+                messages.success(request, "Product added to cart.")
+            cart.cart_total_cost()
+        else:
+            messages.warning(request, "This product is not in stock.")
 
     else:
-        messages.warning(request, "This product is not in stock.")
+        messages.warning(request, "You don`t have enough funds.")
     return redirect(request.META.get('HTTP_REFERER'))
+
+
 
 @login_required
 def orders_list(request):
@@ -44,25 +51,31 @@ def orders_list(request):
     orders = Order.objects.filter(user=user).order_by("-id")
     return render(request, 'cart/checkout.html', {'orders': orders})
 
+
 @login_required
 def create_order(request):
     user = request.user
     cart = Cart.objects.get(user=user)
-    
-    order = Order.objects.create(user=user, total_cost=cart.cart_total_cost())
-    
-    for cart_item in cart.items.all():
-        OrderItem.objects.create(
-            order=order, 
-            product=cart_item.product, 
-            quantity=cart_item.quantity, 
-            item_total_cost=cart_item.get_cost())
-    
-    user.money -= cart.cart_total_cost()
-    user.save()
-    cart.items.all().delete()
+    if user.money - cart.cart_total_cost() >= 0:
+        
+        order = Order.objects.create(user=user, total_cost=cart.cart_total_cost())
+        
+        for cart_item in cart.items.all():
+            OrderItem.objects.create(
+                order=order, 
+                product=cart_item.product, 
+                quantity=cart_item.quantity, 
+                item_total_cost=cart_item.get_cost())
+        
+        user.money -= cart.cart_total_cost()
+        user.save()
+        cart.items.all().delete()
+    else:
+        messages.warning(request, 'You don`t have enough funds.')
+        return redirect('cart')
     
     return redirect('orders_list')
+
 
 @login_required
 def return_order(request, order_id):

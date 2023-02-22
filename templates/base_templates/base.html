@@ -52,6 +52,19 @@
     <header>
       <div id="top-header">
         <div class="container">
+          {% if user.is_authenticated and user.is_staff %}
+          <ul class="header-links pull-left">
+            <li>
+              <a href="{% url 'product_list_admin' %}"> Product List-admin</a>
+            </li>
+            <li>
+              <a href="{% url 'order_list_admin' %}"> Order List-admin</a>
+            </li>
+            <li>
+              <a href="{% url 'create_product_admin' %}"> Create Product-admin</a>
+            </li>
+          </ul>
+          {% else %}
           <ul class="header-links pull-left">
             <li>
               <a href="#"><i class="fa fa-phone"></i> +000-00-00-00</a>
@@ -65,6 +78,7 @@
               >
             </li>
           </ul>
+          {% endif %}
           <ul class="header-links pull-right">
             {% if user.is_authenticated %}
             <li>
@@ -151,6 +165,14 @@
         </div>
       </div>
     </nav>
+
+    {% if messages %}
+    <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
 
 
     {% block content %}

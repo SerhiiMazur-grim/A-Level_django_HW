@@ -6,6 +6,10 @@ from .models import ProductInstance
 class ProductsListView(ListView):
     model = ProductInstance
     template_name = 'product/store.html'
+    
+    def get_queryset(self):
+        queryset = ProductInstance.objects.order_by('category__category').reverse()
+        return queryset
 
 
 class ProductView(DetailView):

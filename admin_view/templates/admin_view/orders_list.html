@@ -20,7 +20,9 @@
             <li><h5>Create: {{ object.created_at }}</h5></li>
             <li><h5>Total: ${{ object.total_cost }}</h5></li>
             <li><h5>Request to teturn: {{ object.request_to_return }}</h5></li>
+            {% if object.request_to_return %}
             <li><h5>Returned: {{ object.is_returned }}</h5></li>
+            {% endif %}
             {% if object.request_to_return and object.is_returned == None %}
 
             <form method="post" action="{% url 'return_money' order_id=object.id %}">

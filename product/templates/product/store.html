@@ -11,58 +11,11 @@
 		<div class="row">
 			<div id="store" class="col-md-9">
 				<div class="row">
-					{% comment %} <div class="col-md-4 col-xs-6">
-						<div class="product">
-							<div class="product-img">
-								<img src="{% static 'img/product01.png' %}" alt="">
-								<div class="product-label">
-									<span class="sale">-30%</span>
-									<span class="new">NEW</span>
-								</div>
-							</div>
-							<div class="product-body">
-								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-							</div>
-							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-							</div>
-						</div>
-					</div>
-					<!-- /product -->
-
-					<!-- product -->
-					<div class="col-md-4 col-xs-6">
-						<div class="product">
-							<div class="product-img">
-								<img src="{% static 'img/product02.png' %}" alt="">
-								<div class="product-label">
-									<span class="sale">-30%</span>
-									<span class="new">NEW</span>
-								</div>
-							</div>
-							<div class="product-body">
-								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-							</div>
-							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-							</div>
-						</div>
-					</div>
-					<!-- /product --> {% endcomment %}
-
-					{% comment %} <div class="clearfix visible-sm visible-xs"></div> {% endcomment %}
 
 					{% for product in object_list %}
 					<!-- product -->
 					<div class="col-md-4 col-xs-6 col-xs-10">
 						<div class="product">
-							{% comment %} <div class="product-img">
-								<img src="./img/product03.png" alt="">
-							</div> {% endcomment %}
 							<div class="product-body">
 								<p class="product-category">{{ product.category }}</p>
 								<h3 class="product-name"><a href="{% url 'product' product.slug %}">{{ product.title }}</a></h3>
@@ -79,6 +32,9 @@
 						</div>
 					</div>
 					<!-- /product -->
+					{% if forloop.counter|divisibleby:3 %}
+					<div class="clearfix visible-lg visible-md"></div>
+					{% endif %}
 					{% endfor %}
 
 					<div class="clearfix visible-lg visible-md"></div>

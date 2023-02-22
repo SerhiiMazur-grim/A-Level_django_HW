@@ -29,6 +29,7 @@ class Cart(models.Model):
         return self.total
 
 
+
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(ProductInstance, on_delete=models.CASCADE)
@@ -51,12 +52,6 @@ class CartItem(models.Model):
         self.quantity += 1
         self.save()
 
-    def decrement_quantity(self):
-        self.quantity -= 1
-        if self.quantity <= 0:
-            self.delete()
-        else:
-            self.save()
 
 
 class Order(models.Model):
