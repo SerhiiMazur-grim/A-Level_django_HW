@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Category, Article
 
 
-""" Звикористанням класу: ModelSerializer """
+""" З використанням класу: ModelSerializer """
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -17,7 +17,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         read_only_fields = ('added', 'updated')
 
 
-""" Звикористанням класу: HyperlinkedModelSerializer """
+""" З використанням класу: HyperlinkedModelSerializer """
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Category
