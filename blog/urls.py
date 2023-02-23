@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, include
+
 from blog.views import home_page, article_page, article_by_category
 
 
