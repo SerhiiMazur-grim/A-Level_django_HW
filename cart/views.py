@@ -14,7 +14,7 @@ class CartView(LoginRequiredMixin, View):
     """
     Display for the user's basket.
     """
-    
+    model = Cart
     template_name = 'cart/cart.html'
 
     def get(self, request, *args, **kwargs):
