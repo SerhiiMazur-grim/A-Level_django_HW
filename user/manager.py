@@ -3,6 +3,10 @@ from django.contrib.auth.base_user import BaseUserManager
 
 class CustomUserManager(BaseUserManager):
     
+    """
+    Custom manager for the CustomUser model.
+    """
+    
     def create_user(self, email, password, **extra_fields):
 
         if not email:

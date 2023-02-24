@@ -4,6 +4,11 @@ from .models import CustomUser
 
 
 class CustomUserCreationForm(UserCreationForm):
+    
+    """
+    A form for creating a user using a custom model.
+    """
+    
     email = forms.EmailField(required=True, label="Email", widget=forms.TextInput(attrs={
         'class': 'form-control', 
         'placeholder': 'Email'
@@ -32,14 +37,12 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('email', 'first_name', 'last_name', 'password1', 'password2',)
 
 
-
-class CustomUserChangeForm(UserChangeForm):
-    class Meta:
-        model = CustomUser
-        fields = ('first_name', 'last_name', 'email',)
-
-
 class Log_in(AuthenticationForm):
+    
+    """
+    A form for login a user.
+    """
+    
     username = forms.EmailField(label='Enter email', widget=forms.EmailInput(attrs={
                 'class': 'form-control',
                 'id': 'email',

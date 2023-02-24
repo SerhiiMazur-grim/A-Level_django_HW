@@ -12,6 +12,11 @@ from .forms import CreateProduct
 
 
 class ProdListAdmin(UserPassesTestMixin, ListView):
+    
+    """
+    Display the list of goods for the administrator.
+    """
+    
     template_name = 'admin_view/prod_list.html'
     model = ProductInstance
     
@@ -23,6 +28,11 @@ class ProdListAdmin(UserPassesTestMixin, ListView):
 
 
 class CreateProdAdmin(UserPassesTestMixin, CreateView):
+    
+    """
+    Display a form to create a new product by an administrator.
+    """
+    
     template_name = 'admin_view/add_prod.html'
     success_url = reverse_lazy('product_list_admin')
     form_class = CreateProduct
@@ -32,6 +42,11 @@ class CreateProdAdmin(UserPassesTestMixin, CreateView):
     
     
 class UpdateProdAdmin(UserPassesTestMixin, UpdateView):
+    
+    """
+    Display a form to update product by an administrator.
+    """
+    
     template_name = 'admin_view/update_prod.html'
     success_url = reverse_lazy('product_list_admin')
     form_class = CreateProduct
@@ -42,6 +57,11 @@ class UpdateProdAdmin(UserPassesTestMixin, UpdateView):
 
 
 class OrderListAdmin(UserPassesTestMixin, ListView):
+    
+    """
+    Display the list of orders for the administrator.
+    """
+    
     template_name = 'admin_view/orders_list.html'
     model = Order
     
@@ -54,6 +74,11 @@ class OrderListAdmin(UserPassesTestMixin, ListView):
 
 @user_passes_test(lambda u: u.is_staff)
 def return_money(request, order_id):
+    
+    """
+    Function to confirm the return of the administrator.
+    """
+    
     order = Order.objects.get(id=order_id)
     if request.method == 'POST' and order.is_returned == None:
         order.return_order()
@@ -63,6 +88,11 @@ def return_money(request, order_id):
 
 @user_passes_test(lambda u: u.is_staff)
 def decline_return(request, order_id):
+    
+    """
+    Function to decline the return of the administrator.
+    """
+    
     order = Order.objects.get(id=order_id)
     if request.method == 'POST' and order.is_returned == None:
         order.is_returned = False

@@ -9,6 +9,11 @@ from product.models import ProductInstance
 
 
 class CartView(LoginRequiredMixin, View):
+    
+    """
+    Display for the user's basket.
+    """
+    
     template_name = 'cart/cart.html'
 
     def get(self, request, *args, **kwargs):
@@ -21,6 +26,12 @@ class CartView(LoginRequiredMixin, View):
 
 @login_required
 def add_to_cart(request, product_id):
+    
+    """
+    The feature adds to the basket a certain product is periivizing whether this 
+    product is in stock and whether the user is sufficient for the user.
+    """
+    
     user = request.user
     cart = Cart.objects.get(user=user)
     product_instance = ProductInstance.objects.get(id=product_id)
@@ -54,6 +65,11 @@ def orders_list(request):
 
 @login_required
 def create_order(request):
+    
+    """
+    The feature creates an order for the user according to the goods it added to the basket.
+    """
+    
     user = request.user
     cart = Cart.objects.get(user=user)
     if user.money - cart.cart_total_cost() >= 0:
@@ -79,6 +95,11 @@ def create_order(request):
 
 @login_required
 def return_order(request, order_id):
+    
+    """
+    The function initializes the return from the user.
+    """
+    
     order = Order.objects.get(id=order_id)
     if request.method == 'POST':
         order.request_return()

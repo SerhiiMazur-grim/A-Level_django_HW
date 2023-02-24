@@ -6,6 +6,10 @@ from .forms import Log_in, CustomUserCreationForm
 
 
 class MyLoginView(LoginView):
+    """
+    A custom login view that uses a custom login form.
+    """
+    
     form_class = Log_in
     success_url = reverse_lazy('home')
     template_name = 'user/login.html'
@@ -15,6 +19,11 @@ class MyLoginView(LoginView):
 
 
 class MyRegister(CreateView):
+    
+    """
+    A view for registering a new user.
+    """
+    
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'user/register.html'
@@ -27,6 +36,11 @@ class MyRegister(CreateView):
 
 
 class MyLogout(LogoutView):
+    
+    """
+    A view for logout a user.
+    """
+    
     next_page = reverse_lazy('home')
 
     def get_next_page(self):

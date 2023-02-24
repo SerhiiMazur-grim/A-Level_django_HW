@@ -7,6 +7,11 @@ from .manager import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    
+    """
+    A custom user model representing a registered user of the application.
+    """
+    
     username = None
     first_name = models.CharField(max_length=32)
     last_name = models.CharField(max_length=32)

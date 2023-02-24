@@ -4,6 +4,11 @@ from .models import ProductInstance
 
 
 class ProductsListView(ListView):
+    
+    """
+    View to display the product list.
+    """
+    
     model = ProductInstance
     template_name = 'product/store.html'
     
@@ -13,11 +18,21 @@ class ProductsListView(ListView):
 
 
 class ProductView(DetailView):
+    
+    """
+    View to display a particular product.
+    """
+    
     model = ProductInstance
     template_name = 'product/product.html'
 
 
 class ProductsByCategory(ListView):
+    
+    """
+    View to display the product list by categories.
+    """
+    
     model = ProductInstance
     template_name = 'product/category.html'
     

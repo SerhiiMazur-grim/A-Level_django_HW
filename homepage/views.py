@@ -4,6 +4,11 @@ from product.models import ProductInstance
 
 
 class HomeView(ListView):
+    
+    """
+    Display the main (home) site page.
+    """
+    
     model = ProductInstance
     template_name = 'homepage/homepage.html'
     
