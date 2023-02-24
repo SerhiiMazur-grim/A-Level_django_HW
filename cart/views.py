@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
+from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -55,12 +56,20 @@ def add_to_cart(request, product_id):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+class OrdersList(LoginRequiredMixin, ListView):
+        
+    """
+    Display a list of orders for the logged-in user.
+    """
 
-@login_required
-def orders_list(request):
-    user = request.user
-    orders = Order.objects.filter(user=user).order_by("-id")
-    return render(request, 'cart/checkout.html', {'orders': orders})
+    model = Order
+    template_name = 'cart/checkout.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = super().get_queryset().filter(user=user).order_by('-id')
+        return queryset
 
 
 @login_required
