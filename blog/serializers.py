@@ -17,16 +17,16 @@ class ArticleSerializer(serializers.ModelSerializer):
         read_only_fields = ('added', 'updated')
 
 
-""" З використанням класу: HyperlinkedModelSerializer """
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Category
-        fields = ('url', 'id', 'category')
+# """ З використанням класу: HyperlinkedModelSerializer """
+# class CategorySerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = Category
+#         fields = ('url', 'id', 'category')
 
-class ArticleSerializer(serializers.HyperlinkedModelSerializer):
-    category = CategorySerializer()
+# class ArticleSerializer(serializers.HyperlinkedModelSerializer):
+#     category = CategorySerializer()
 
-    class Meta:
-        model = Article
-        fields = ('url', 'id', 'title', 'category', 'content', 'added', 'updated')
-        read_only_fields = ('added', 'updated')
+#     class Meta:
+#         model = Article
+#         fields = ('url', 'id', 'title', 'category', 'content', 'added', 'updated')
+#         read_only_fields = ('added', 'updated')
