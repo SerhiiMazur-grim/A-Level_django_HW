@@ -1,0 +1,60 @@
+{% extends 'base_templates/base.html' %}
+
+{% load static %}
+
+{% block title %}Checkout{% endblock title %}
+
+{% block content %}
+
+<!-- SECTION -->
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			{% if cart.items.all.exists %}
+			<!-- Order Details -->
+			<div class="col-md-5 order-details">
+				<div class="section-title text-center">
+					
+					<h3 class="title">Your products for order</h3>
+				</div>
+				<div class="order-summary">
+					<div class="order-col">
+						<div><strong>PRODUCT</strong></div>
+						<div><strong>TOTAL</strong></div>
+					</div>
+					<div class="order-products">
+						{% for item in cart.items.all %}
+						<div class="order-col">
+							<div>{{item.quantity}}x {{item.product.title}}</div>
+							<div>${{item.get_cost}}</div>
+						</div>
+						{% endfor %}
+					</div>
+					<div class="order-col">
+						<div>Shiping</div>
+						<div><strong>FREE</strong></div>
+					</div>
+					<div class="order-col">
+						<div><strong>TOTAL</strong></div>
+						<div><strong class="order-total">${{cart.total}}</strong></div>
+					</div>
+				</div>
+
+				<a href="{% url 'create_order' %}" class="primary-btn order-submit">Place order</a>
+			</div>
+			<!-- /Order Details -->
+			{% else %}
+			<h3 class="title">Your cart empty</h3>
+			{% endif %}
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /SECTION -->
+
+
+{% endblock content %}
+

@@ -1,0 +1,28 @@
+{% extends 'base_templates/base.html' %}
+
+{% load static %}
+
+{% block title %}ProductList{% endblock title %}
+
+{% block content %}
+
+<div class="section">
+	<div class="container">
+        <ul>
+            {% for object in object_list %}
+            <li><h4>Title: <a href="{% url 'update_product_admin' object.pk %}">{{ object.title }}</a></h4></li>
+            <li><h5>ID: {{ object.id }}</h5></li>
+            <li><h5>Price: ${{ object.price }}</h5></li>
+            <li><h5>Quantity: {{ object.quantity }}</h5></li>
+            <li><h5>Create: {{ object.created }}</h5></li>
+            <li><h5>Update: {{ object.updated }}</h5></li>
+           
+            <hr/>
+            {% empty %}
+            <li>No objects yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock content %}

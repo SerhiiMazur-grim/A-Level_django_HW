@@ -1,0 +1,10 @@
+{% if user.is_authenticated and product.quantity%}
+<form action="{% url 'add_to_cart' product_id=product.id %}" method="post">
+  {% csrf_token %}
+  <div class="add-to-cart">
+    <button class="add-to-cart-btn">
+      <i class="fa fa-shopping-cart"></i> add to cart
+    </button>
+  </div>
+</form>
+{% endif %}
