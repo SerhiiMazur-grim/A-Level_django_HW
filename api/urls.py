@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from .views import (
     ArticleListAPIView,
@@ -26,4 +26,6 @@ urlpatterns = [
     path('api/users/create/', UserCreateAPIView.as_view(), name='user_create'),
     path('api/users/<int:pk>/update/', UserUpdateAPIView.as_view(), name='user_update'),
     path('api/users/<int:pk>/delete/', UserDeleteView.as_view(), name='user_delete'),
+    
+    path('api-auth/', include('rest_framework.urls')),
 ]

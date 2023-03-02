@@ -13,7 +13,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ('id', 'title', 'category', 'content', 'added', 'updated')
+        fields = ('id', 'owner', 'title', 'category', 'content', 'added', 'updated')
         read_only_fields = ('added', 'updated')
 
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -8,6 +9,7 @@ class Category(models.Model):
         return self.category
 
 class Article(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField('Title', max_length=150)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     content = models.TextField('Content')
